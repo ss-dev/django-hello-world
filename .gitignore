@@ -1,2 +1,8 @@
+.gitignore
+
+.env/
+.idea/
+
 *.pyc
 *.sqlite3
+*~
