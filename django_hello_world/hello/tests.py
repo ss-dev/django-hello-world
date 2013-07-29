@@ -7,8 +7,9 @@ Replace this with more appropriate tests for your application.
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test.client import Client
-
+from django.test.client import Client, RequestFactory
+from django_hello_world.hello.models import LogRequest
+from django_hello_world.hello.middleware import RequestLoggerMiddleware
 
 
 class SimpleTest(TestCase):
@@ -39,3 +40,19 @@ class HttpTest(TestCase):
         self.assertIsNotNone(response.context['contact'].skype)
         self.assertIsNotNone(response.context['contact'].contacts)
         self.assertIsNotNone(response.context['contact'].bio)
+
+    def test_middleware_request_logger(self):
+        factory = RequestFactory()
+        request = factory.get('/')
+        middleware = RequestLoggerMiddleware()
+        middleware.process_request(request)
+
+        self.assertEqual(LogRequest.objects.count(), 1)
+        self.assertEqual(LogRequest.objects.get(pk=1).method, 'GET')
+        self.assertEqual(LogRequest.objects.get(pk=1).path, '/')
+
+        c = Client()
+        response = c.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'requests')
+        self.assertIsNotNone(response.context['log_request'])
