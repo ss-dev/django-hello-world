@@ -62,6 +62,8 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/login/'
+
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
@@ -108,6 +110,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
+    'django.contrib.auth.context_processors.auth',
     'django_hello_world.hello.context_processors.settings',
 )
 

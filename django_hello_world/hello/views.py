@@ -9,3 +9,8 @@ def home(request):
     contact = Contact.objects.get(pk=1)
     log_request = LogRequest.objects.filter().order_by('pk')[:10]
     return {'users': users, 'contact': contact, 'log_request': log_request}
+
+
+@render_to('hello/home.html')
+def edit(request):
+    pass
