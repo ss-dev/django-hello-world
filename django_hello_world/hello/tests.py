@@ -30,6 +30,9 @@ class HttpTest(TestCase):
         self.assertContains(response, '42 Coffee Cups Test Assignment')
         self.assertContains(response, 'Login</a>')
 
+        response = c.get(reverse('edit'))
+        self.assertNotEqual(response.status_code, 200)
+
         c.post('/login/', {'username': 'admin', 'password': 'admin'})
         response = c.get(reverse('home'))
         self.assertContains(response, 'Edit</a>')

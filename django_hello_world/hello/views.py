@@ -1,5 +1,6 @@
 from annoying.decorators import render_to
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from models import Contact, LogRequest
 
 
@@ -11,6 +12,7 @@ def home(request):
     return {'users': users, 'contact': contact, 'log_request': log_request}
 
 
+@login_required()
 @render_to('hello/home.html')
 def edit(request):
     pass
