@@ -101,6 +101,16 @@ MIDDLEWARE_CLASSES = (
     'django_hello_world.hello.middleware.RequestLoggerMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+    'django_hello_world.hello.context_processors.settings',
+)
+
 ROOT_URLCONF = 'django_hello_world.urls'
 
 TEMPLATE_DIRS = (
