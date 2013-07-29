@@ -10,3 +10,10 @@ class Contact(models.Model):
     skype = models.CharField('Skype', max_length=20)
     contacts = models.TextField('Other contacts')
     bio = models.TextField('Bio')
+
+
+class LogRequest(models.Model):
+    date = models.DateTimeField('Datetime', auto_now_add=True)
+    host = models.CharField('Host', max_length=150)
+    path = models.CharField('Path', max_length=250)
+    method = models.CharField('Method', max_length=30)
