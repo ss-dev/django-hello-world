@@ -25,3 +25,17 @@ class HttpTest(TestCase):
         response = c.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Hello!')
+
+    def test_contact(self):
+        c = Client()
+        response = c.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['contact'])
+        self.assertIsNotNone(response.context['contact'].name)
+        self.assertIsNotNone(response.context['contact'].surname)
+        self.assertIsNotNone(response.context['contact'].date_birth)
+        self.assertIsNotNone(response.context['contact'].email)
+        self.assertIsNotNone(response.context['contact'].jabber)
+        self.assertIsNotNone(response.context['contact'].skype)
+        self.assertIsNotNone(response.context['contact'].contacts)
+        self.assertIsNotNone(response.context['contact'].bio)

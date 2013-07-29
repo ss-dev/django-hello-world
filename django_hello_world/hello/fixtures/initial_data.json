@@ -16,5 +16,19 @@
             "email": "admin@example.com", 
             "date_joined": "2011-08-19 09:53:08"
         }
+    },
+    {
+        "pk": 1,
+        "model": "hello.contact",
+        "fields": {
+            "name": "Alex",
+            "surname": "Borodavka",
+            "date_birth": "1983-11-18",
+            "email": "ssdevelop@yandex.ru",
+            "jabber": "ss-dev@khavr.com",
+            "skype": "ss-dev",
+            "contacts": "",
+            "bio": ""
+        }
     }
 ]
