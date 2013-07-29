@@ -10,6 +10,8 @@ from django.test import TestCase
 from django.test.client import Client, RequestFactory
 from django_hello_world.hello.models import LogRequest
 from django_hello_world.hello.middleware import RequestLoggerMiddleware
+from django_hello_world.hello.context_processors import settings
+import django_hello_world.settings as conf
 
 
 class SimpleTest(TestCase):
@@ -56,3 +58,8 @@ class HttpTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'requests')
         self.assertIsNotNone(response.context['log_request'])
+
+    def test_template_context(self):
+        processor_result = settings(None)
+        self.assertEqual(processor_result['settings'], conf)
+        self.assertIn('django_hello_world.hello.context_processors.settings', conf.TEMPLATE_CONTEXT_PROCESSORS)
