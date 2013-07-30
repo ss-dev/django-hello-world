@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>Hello! This is a Django Hello World Project.</h3>
+<h3>42 Coffee Cups Test Assignment</h3>
+
+{% if user.is_authenticated %}
+    <a id="auth_url" href="{% url edit %}">Edit</a>
+{% else %}
+    <a id="auth_url" href="{% url login %}">Login</a>
+{% endif %}
 
 <table width="100%">
 <tr>
@@ -11,6 +17,7 @@
         <p><label>Last name</label>: {{ contact.surname }}</p>
         <p><label>Date of birth</label>: {{ contact.date_birth }}</p>
         <p><label>Bio</label>: {{ contact.bio }}</p>
+        <p><label>Photo</label>:<br /><img src="{{ contact.photo.url }}" /></p>
     </td>
     <td width="50%">
         <h4>Contacts</h4>

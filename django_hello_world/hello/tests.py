@@ -27,7 +27,15 @@ class HttpTest(TestCase):
         c = Client()
         response = c.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Hello!')
+        self.assertContains(response, '42 Coffee Cups Test Assignment')
+        self.assertContains(response, 'Login</a>')
+
+        response = c.get(reverse('edit'))
+        self.assertNotEqual(response.status_code, 200)
+
+        c.post('/login/', {'username': 'admin', 'password': 'admin'})
+        response = c.get(reverse('home'))
+        self.assertContains(response, 'Edit</a>')
 
     def test_contact(self):
         c = Client()
@@ -42,6 +50,7 @@ class HttpTest(TestCase):
         self.assertIsNotNone(response.context['contact'].skype)
         self.assertIsNotNone(response.context['contact'].contacts)
         self.assertIsNotNone(response.context['contact'].bio)
+        self.assertIsNotNone(response.context['contact'].photo)
 
     def test_middleware_request_logger(self):
         factory = RequestFactory()

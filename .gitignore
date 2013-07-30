@@ -2,6 +2,7 @@
 
 .env/
 .idea/
+django_hello_world/media/photo/*
 
 *.pyc
 *.sqlite3
