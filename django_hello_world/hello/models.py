@@ -10,6 +10,7 @@ class Contact(models.Model):
     skype = models.CharField('Skype', max_length=20)
     contacts = models.TextField('Other contacts')
     bio = models.TextField('Bio')
+    photo = models.ImageField('Photo', upload_to='/', null=True)
 
 
 class LogRequest(models.Model):

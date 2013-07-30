@@ -50,6 +50,7 @@ class HttpTest(TestCase):
         self.assertIsNotNone(response.context['contact'].skype)
         self.assertIsNotNone(response.context['contact'].contacts)
         self.assertIsNotNone(response.context['contact'].bio)
+        self.assertIsNotNone(response.context['contact'].photo)
 
     def test_middleware_request_logger(self):
         factory = RequestFactory()
