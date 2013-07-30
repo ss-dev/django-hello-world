@@ -4,6 +4,7 @@
 <head>
     <title>{% block title %}No title{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/index.css">
+    {% block head %}{% endblock %}
 </head>
 <body>{% block body %}{% block content %}{% endblock content %}{% endblock body %}</body>
 </html>
