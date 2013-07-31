@@ -7,27 +7,27 @@
         <td width="50%" valign="top">
             <h4>Info</h4>
             {{ form.name.errors }}
-            <p><label>Name</label>: {{ form.name }}</p>
+            <p>{{ form.name.label_tag }}: {{ form.name }}</p>
             {{ form.surname.errors }}
-            <p><label>Last name</label>: {{ form.surname }}</p>
+            <p>{{ form.surname.label_tag }}: {{ form.surname }}</p>
             {{ form.date_birth.errors }}
-            <p><label>Date of birth</label>: {{ form.date_birth }}</p>
+            <p>{{ form.date_birth.label_tag }}: {{ form.date_birth }}</p>
             {{ form.photo.errors }}
-            <p><label>Photo</label>: {{ form.photo }}</p>
+            <p>{{ form.photo.label_tag }}: {{ form.photo }}</p>
             <img id="photo_preview" src="{% if contact.photo %}{{ contact.photo.url }}{% endif %}" />
         </td>
         <td width="50%" valign="top">
             <h4>Contacts</h4>
             {{ form.email.errors }}
-            <p><label>Email</label>: {{ form.email }}</p>
+            <p>{{ form.email.label_tag }}: {{ form.email }}</p>
             {{ form.jabber.errors }}
-            <p><label>Jabber</label>: {{ form.jabber }}</p>
+            <p>{{ form.jabber.label_tag }}: {{ form.jabber }}</p>
             {{ form.skype.errors }}
-            <p><label>Skype</label>: {{ form.skype }}</p>
+            <p>{{ form.skype.label_tag }}: {{ form.skype }}</p>
             {{ form.contacts.errors }}
-            <p><label>Other contacts</label>: <br /> {{ form.contacts }}</p>
+            <p>{{ form.contacts.label_tag }}: <br /> {{ form.contacts }}</p>
             {{ form.bio.errors }}
-            <p><label>Bio</label>: <br /> {{ form.bio }}</p>
+            <p>{{ form.bio.label_tag }}: <br /> {{ form.bio }}</p>
         </td>
     </tr>
 </table>
