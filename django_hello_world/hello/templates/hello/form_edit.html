@@ -6,28 +6,19 @@
     <tr>
         <td width="50%" valign="top">
             <h4>Info</h4>
-            {{ form.name.errors }}
-            <p>{{ form.name.label_tag }}: {{ form.name }}</p>
-            {{ form.surname.errors }}
-            <p>{{ form.surname.label_tag }}: {{ form.surname }}</p>
-            {{ form.date_birth.errors }}
-            <p>{{ form.date_birth.label_tag }}: {{ form.date_birth }}</p>
-            {{ form.photo.errors }}
-            <p>{{ form.photo.label_tag }}: {{ form.photo }}</p>
+            <p>{{ form.name.label_tag }}: {{ form.name }}</p> {{ form.name.errors }}
+            <p>{{ form.surname.label_tag }}: {{ form.surname }}</p> {{ form.surname.errors }}
+            <p>{{ form.date_birth.label_tag }}: {{ form.date_birth }}</p> {{ form.date_birth.errors }}
+            <p>{{ form.photo.label_tag }}: {{ form.photo }}</p> {{ form.photo.errors }}
             <img id="photo_preview" src="{% if contact.photo %}{{ contact.photo.url }}{% endif %}" />
         </td>
         <td width="50%" valign="top">
             <h4>Contacts</h4>
-            {{ form.email.errors }}
-            <p>{{ form.email.label_tag }}: {{ form.email }}</p>
-            {{ form.jabber.errors }}
-            <p>{{ form.jabber.label_tag }}: {{ form.jabber }}</p>
-            {{ form.skype.errors }}
-            <p>{{ form.skype.label_tag }}: {{ form.skype }}</p>
-            {{ form.contacts.errors }}
-            <p>{{ form.contacts.label_tag }}: <br /> {{ form.contacts }}</p>
-            {{ form.bio.errors }}
-            <p>{{ form.bio.label_tag }}: <br /> {{ form.bio }}</p>
+            <p>{{ form.email.label_tag }}: {{ form.email }}</p> {{ form.email.errors }}
+            <p>{{ form.jabber.label_tag }}: {{ form.jabber }}</p> {{ form.jabber.errors }}
+            <p>{{ form.skype.label_tag }}: {{ form.skype }}</p> {{ form.skype.errors }}
+            <p>{{ form.contacts.label_tag }}: <br /> {{ form.contacts }}</p> {{ form.contacts.errors }}
+            <p>{{ form.bio.label_tag }}: <br /> {{ form.bio }}</p> {{ form.bio.errors }}
         </td>
     </tr>
 </table>
