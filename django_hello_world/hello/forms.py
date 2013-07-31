@@ -1,13 +1,13 @@
 from django.forms import ModelForm, DateField
-from django.forms.extras.widgets import SelectDateWidget
 from django_hello_world.hello.models import Contact
-
-
-BIRTH_YEAR_CHOICES = ('1981', '1982', '1983', '1984', '1985')
+from django_hello_world.hello.widgets import DatePickerWidget
 
 
 class ContactForm(ModelForm):
-    date_birth = DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
+    date_birth = DateField(widget=DatePickerWidget(
+        params="changeMonth: true, changeYear: true, dateFormat: 'yy.mm.dd', yearRange: 'c-40:c+1'",
+        attrs={'class': 'datepicker', }
+    ))
 
     class Meta:
         model = Contact
