@@ -74,6 +74,10 @@ class HttpTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Enter a valid e-mail address')
 
+        response = c.get(reverse('edit'), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['form'])
+
     def test_middleware_request_logger(self):
         factory = RequestFactory()
         request = factory.get('/')
