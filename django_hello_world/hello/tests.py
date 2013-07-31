@@ -52,6 +52,16 @@ class HttpTest(TestCase):
         self.assertIsNotNone(response.context['contact'].bio)
         self.assertIsNotNone(response.context['contact'].photo)
 
+    def test_edit(self):
+        c = Client()
+        response = c.get(reverse('edit'))
+        self.assertNotEqual(response.status_code, 200)
+
+        c.post('/login/', {'username': 'admin', 'password': 'admin'})
+        response = c.get(reverse('edit'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['form'])
+
     def test_middleware_request_logger(self):
         factory = RequestFactory()
         request = factory.get('/')

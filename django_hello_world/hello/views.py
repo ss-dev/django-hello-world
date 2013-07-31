@@ -23,12 +23,9 @@ def edit(request):
     log_request = LogRequest.objects.filter().order_by('pk')[:10]
     contact = Contact.objects.get(pk=1)
 
-    if request.method == 'POST':
-        form = ContactForm(request.POST, request.FILES, instance=contact)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('edit'))
-    else:
-        form = ContactForm(instance=contact)
+    form = ContactForm(request.POST or None, request.FILES or None, instance=contact)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('edit'))
 
     return render(request, 'hello/edit.html', {'form': form, 'log_request': log_request})
