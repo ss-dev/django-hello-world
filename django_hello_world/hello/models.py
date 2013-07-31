@@ -8,9 +8,9 @@ class Contact(models.Model):
     email = models.EmailField('Email')
     jabber = models.EmailField('Jabber')
     skype = models.CharField('Skype', max_length=20)
-    contacts = models.TextField('Other contacts')
-    bio = models.TextField('Bio')
-    photo = models.ImageField('Photo', upload_to='photo', null=True)
+    contacts = models.TextField('Other contacts', blank=True, null=True)
+    bio = models.TextField('Bio', blank=True, null=True)
+    photo = models.ImageField('Photo', upload_to='photo', blank=True, null=True)
 
 
 class LogRequest(models.Model):

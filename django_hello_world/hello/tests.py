@@ -25,7 +25,7 @@ class HttpTest(TestCase):
         response = c.get(reverse('edit'))
         self.assertNotEqual(response.status_code, 200)
 
-        c.post('/login/', {'username': 'admin', 'password': 'admin'})
+        c.login(username='admin', password='admin')
         response = c.get(reverse('home'))
         self.assertContains(response, 'Edit</a>')
 
@@ -49,10 +49,30 @@ class HttpTest(TestCase):
         response = c.get(reverse('edit'))
         self.assertNotEqual(response.status_code, 200)
 
-        c.post('/login/', {'username': 'admin', 'password': 'admin'})
+        c.login(username='admin', password='admin')
         response = c.get(reverse('edit'))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.context['form'])
+
+        data = {
+            'name': 'abc',
+            'surname': 'qwe',
+            'date_birth': '1981-11-11',
+            'email': 'abc@abc.com',
+            'jabber': 'abc@abc.com',
+            'skype': 'abc'
+        }
+        c.post(reverse('edit'), data)
+        self.assertEqual(response.status_code, 200)
+
+        response = c.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['contact'].name, 'abc')
+
+        data['email'] = '.'
+        response = c.post(reverse('edit'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Enter a valid e-mail address')
 
     def test_middleware_request_logger(self):
         factory = RequestFactory()
