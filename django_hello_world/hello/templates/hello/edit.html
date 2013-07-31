@@ -3,53 +3,48 @@
 {% block head %}
     {{ form.media }}
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
     <script type="text/javascript">
     $('#id_photo').change(function(){
         $('#photo_preview').attr('src', $('#id_photo').val())
-    })
+    });
+
+    $(document).ready(function() {
+        var options = {
+            target: '#ajaxwrapper',
+            beforeSubmit: pre_submit,
+            success: post_submit
+        };
+
+        $('#contactform').ajaxForm(options)
+    });
+
+    function pre_submit(formData, jqForm, options) {
+        $('#formstatus').html('Sending form...');
+        $('#btnsubmit').attr('disabled', true);
+        $('#btncancel').attr('disabled', true);
+        return true;
+    }
+
+    function post_submit(responseText, statusText, xhr, $form)  {
+        $('#btnsubmit').attr('disabled', false);
+        $('#btncancel').attr('disabled', false);
+    }
     </script>
 {% endblock %}
 
 {% block content %}
     <h3>42 Coffee Cups Test Assignment</h3>
 
-    <form action="{% url edit %}" method="post"
+    <form id="contactform" action="{% url edit %}" method="post"
         {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-        {% csrf_token %}
 
-    {{ form.non_field_errors }}
+    <div id="ajaxwrapper">
+        {% include "hello/form_edit.html" %}
+    </div>
 
-    <table width="100%">
-        <tr>
-            <td width="50%" valign="top">
-                <h4>Info</h4>
-                {{ form.name.errors }}
-                <p><label>Name</label>: {{ form.name }}</p>
-                {{ form.surname.errors }}
-                <p><label>Last name</label>: {{ form.surname }}</p>
-                {{ form.date_birth.errors }}
-                <p><label>Date of birth</label>: {{ form.date_birth }}</p>
-                {{ form.photo.errors }}
-                <p><label>Photo</label>: {{ form.photo }}</p>
-                <img id="photo_preview" src="" />
-            </td>
-            <td width="50%" valign="top">
-                <h4>Contacts</h4>
-                {{ form.email.errors }}
-                <p><label>Email</label>: {{ form.email }}</p>
-                {{ form.jabber.errors }}
-                <p><label>Jabber</label>: {{ form.jabber }}</p>
-                {{ form.skype.errors }}
-                <p><label>Skype</label>: {{ form.skype }}</p>
-                {{ form.contacts.errors }}
-                <p><label>Other contacts</label>: <br /> {{ form.contacts }}</p>
-                {{ form.bio.errors }}
-                <p><label>Bio</label>: <br /> {{ form.bio }}</p>
-            </td>
-        </tr>
-    </table>
-
-    <input type="submit" value="Save" /> <a href="{% url home %}">Cancel</a>
+    <input id="btnsubmit" type="submit" value="Save" />
+    <a id="btncancel" href="{% url home %}">Cancel</a>
 
     </form>
 

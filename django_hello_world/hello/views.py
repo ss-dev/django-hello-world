@@ -26,6 +26,16 @@ def edit(request):
     form = ContactForm(request.POST or None, request.FILES or None, instance=contact)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('edit'))
+        if request.is_ajax():
+            return render(request, 'hello/form_edit.html', {
+                'form': form,
+                'contact': contact,
+                'notification': 'Changes have been saved'
+            })
+        else:
+            return HttpResponseRedirect(reverse('edit'))
 
-    return render(request, 'hello/edit.html', {'form': form, 'log_request': log_request})
+    if request.is_ajax():
+        return render(request, 'hello/form_edit.html', {'form': form, 'contact': contact})
+    else:
+        return render(request, 'hello/edit.html', {'form': form, 'contact': contact, 'log_request': log_request})
