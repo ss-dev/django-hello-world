@@ -14,14 +14,6 @@ from django_hello_world.hello.context_processors import settings
 import django_hello_world.settings as conf
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
-
-
 class HttpTest(TestCase):
     def test_home(self):
         c = Client()
