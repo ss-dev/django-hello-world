@@ -64,8 +64,12 @@ class HttpTest(TestCase):
         self.assertEqual(LogRequest.objects.get(pk=1).method, 'GET')
         self.assertEqual(LogRequest.objects.get(pk=1).path, '/')
 
+        request = factory.get(reverse('requests'))
+        middleware.process_request(request)
+        self.assertEqual(LogRequest.objects.count(), 1)
+
         c = Client()
-        response = c.get(reverse('home'))
+        response = c.get(reverse('requests'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'requests')
         self.assertIsNotNone(response.context['log_request'])

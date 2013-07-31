@@ -30,18 +30,6 @@
 </table>
 
 <hr />
-<h4>requests</h4>
-{% if log_request %}
-<table>
-{% for obj in log_request %}
-    <tr>
-        <td>{{ obj.date }}</td>
-        <td>{{ obj.host }}</td>
-        <td>{{ obj.path }}</td>
-        <td>{{ obj.method }}</td>
-    </tr>
-{% endfor %}
-</table>
-{% endif %}
+<a href="{% url requests %}" target="_blank">requests</a>
 
 {% endblock content %}

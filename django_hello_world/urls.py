@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'django_hello_world.hello.views.home', name='home'),
     url(r'^edit/$', 'django_hello_world.hello.views.edit', name='edit'),
+    url(r'^requests/$', 'django_hello_world.hello.views.requests', name='requests'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

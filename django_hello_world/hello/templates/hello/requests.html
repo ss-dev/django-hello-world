@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3>requests</h3>
+    {% if log_request %}
+        <table>
+            {% for obj in log_request %}
+                <tr>
+                    <td>{{ obj.date }}</td>
+                    <td>{{ obj.host }}</td>
+                    <td>{{ obj.path }}</td>
+                    <td>{{ obj.method }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+{% endblock content %}
