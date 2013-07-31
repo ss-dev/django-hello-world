@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block head %}
-    {{ form.media }}
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script>
+    {{ form.media }}
     <script type="text/javascript">
     $('#id_photo').change(function(){
         $('#photo_preview').attr('src', $('#id_photo').val())
