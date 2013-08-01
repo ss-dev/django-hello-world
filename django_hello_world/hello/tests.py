@@ -107,4 +107,4 @@ class HttpTest(TestCase):
 
     def test_template_tags(self):
         self.assertEqual(edit_link(123), '()')
-        self.assertEqual(edit_link(User.objects.get(pk=1)), '(<a href="/admin/auth/user/1/">admin</a>)')
+        self.assertEqual(edit_link(User.objects.get(pk=1)), '<a href="/admin/auth/user/1/">(admin)</a>')
