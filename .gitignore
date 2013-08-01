@@ -8,3 +8,4 @@ django_hello_world/media/photo/*
 *.pyc
 *.sqlite3
 *~
+*.dat
