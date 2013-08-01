@@ -13,6 +13,7 @@ from django_hello_world.hello.models import LogRequest, LogModelSignals
 from django_hello_world.hello.middleware import RequestLoggerMiddleware
 from django_hello_world.hello.context_processors import settings
 from django_hello_world.hello.templatetags.hello_tags import edit_link
+from django_hello_world.hello.forms import LogOrderingForm
 import django_hello_world.settings as conf
 
 
@@ -118,3 +119,21 @@ class HttpTest(TestCase):
         self.assertEqual(LogModelSignals.objects.count(), 1)
         self.assertEqual(LogModelSignals.objects.get(pk=1).event, LogModelSignals.CREATION)
         self.assertEqual(LogModelSignals.objects.get(pk=1).model, 'logrequest')
+
+
+class HttpTest2(TestCase):
+    fixtures = ['log_requests']
+
+    def test_ordering_requests(self):
+        c = Client()
+        response = c.get(reverse('requests'), {'order': LogOrderingForm.FIRST})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['form'])
+        self.assertIsNotNone(response.context['log_request'])
+        self.assertEqual(response.context['log_request'][0].id, 1)
+
+        response = c.get(reverse('requests'), {'order': LogOrderingForm.LAST})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context['form'])
+        self.assertIsNotNone(response.context['log_request'])
+        self.assertEqual(response.context['log_request'][0].id, 2)

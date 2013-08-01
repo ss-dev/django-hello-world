@@ -3,6 +3,15 @@
 {% block content %}
 
     <h3>requests</h3>
+
+    <form action="{% url requests %}" method="get">
+        <p>
+        {{ form.order.label_tag }}
+        {{ form.order }}
+        <input type="submit" value="Submit" />
+        </p>
+    </form>
+
     {% if log_request %}
         <table>
             {% for obj in log_request %}
