@@ -8,9 +8,11 @@ Replace this with more appropriate tests for your application.
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client, RequestFactory
+from django.contrib.auth.models import User
 from django_hello_world.hello.models import LogRequest
 from django_hello_world.hello.middleware import RequestLoggerMiddleware
 from django_hello_world.hello.context_processors import settings
+from django_hello_world.hello.templatetags.hello_tags import edit_link
 import django_hello_world.settings as conf
 
 
@@ -102,3 +104,7 @@ class HttpTest(TestCase):
         processor_result = settings(None)
         self.assertEqual(processor_result['settings'], conf)
         self.assertIn('django_hello_world.hello.context_processors.settings', conf.TEMPLATE_CONTEXT_PROCESSORS)
+
+    def test_template_tags(self):
+        self.assertEqual(edit_link(123), '()')
+        self.assertEqual(edit_link(User.objects.get(pk=1)), '(<a href="/admin/auth/user/1/">admin</a>)')
