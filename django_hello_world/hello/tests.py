@@ -16,6 +16,10 @@ from django_hello_world.hello.templatetags.hello_tags import edit_link
 from django_hello_world.hello.forms import LogOrderingForm
 import django_hello_world.settings as conf
 
+from django.db.models.signals import post_save
+from django_hello_world.hello.signals import on_create_or_save
+post_save.disconnect(on_create_or_save)
+
 
 class HttpTest(TestCase):
     def test_home(self):
@@ -111,6 +115,8 @@ class HttpTest(TestCase):
         self.assertEqual(edit_link(User.objects.get(pk=1)), '<a href="/admin/auth/user/1/">(admin)</a>')
 
     def test_model_signals(self):
+        post_save.connect(on_create_or_save)
+
         c = Client()
         c.get(reverse('requests'))
         self.assertEqual(LogModelSignals.objects.count(), 0)
@@ -119,6 +125,8 @@ class HttpTest(TestCase):
         self.assertEqual(LogModelSignals.objects.count(), 1)
         self.assertEqual(LogModelSignals.objects.get(pk=1).event, LogModelSignals.CREATION)
         self.assertEqual(LogModelSignals.objects.get(pk=1).model, 'logrequest')
+
+        post_save.disconnect(on_create_or_save)
 
 
 class HttpTest2(TestCase):
