@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client, RequestFactory
 from django.contrib.auth.models import User
-from django_hello_world.hello.models import LogRequest
+from django_hello_world.hello.models import LogRequest, LogModelSignals
 from django_hello_world.hello.middleware import RequestLoggerMiddleware
 from django_hello_world.hello.context_processors import settings
 from django_hello_world.hello.templatetags.hello_tags import edit_link
@@ -108,3 +108,13 @@ class HttpTest(TestCase):
     def test_template_tags(self):
         self.assertEqual(edit_link(123), '()')
         self.assertEqual(edit_link(User.objects.get(pk=1)), '<a href="/admin/auth/user/1/">(admin)</a>')
+
+    def test_model_signals(self):
+        c = Client()
+        c.get(reverse('requests'))
+        self.assertEqual(LogModelSignals.objects.count(), 0)
+
+        c.get(reverse('home'))
+        self.assertEqual(LogModelSignals.objects.count(), 1)
+        self.assertEqual(LogModelSignals.objects.get(pk=1).event, LogModelSignals.CREATION)
+        self.assertEqual(LogModelSignals.objects.get(pk=1).model, 'logrequest')
