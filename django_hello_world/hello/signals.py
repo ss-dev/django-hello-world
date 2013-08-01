@@ -5,11 +5,12 @@ from django.contrib.contenttypes.models import ContentType
 
 
 @receiver(post_save)
-def on_create_or_save(sender, created, **kwargs):
-    if ContentType.objects.get_for_model(sender) != ContentType.objects.get_for_model(LogModelSignals):
+def on_create_or_save(sender, **kwargs):
+    if (not kwargs.get('raw', False) and
+            ContentType.objects.get_for_model(sender) != ContentType.objects.get_for_model(LogModelSignals)):
         LogModelSignals.objects.create(
             model=ContentType.objects.get_for_model(sender).model,
-            event=(LogModelSignals.CREATION if created else LogModelSignals.EDITING),
+            event=(LogModelSignals.CREATION if kwargs.get('created', False) else LogModelSignals.EDITING),
         )
 
 
