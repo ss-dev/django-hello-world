@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse, resolve
+from django.core.urlresolvers import resolve
 from django_hello_world.hello.models import LogRequest
 
 
