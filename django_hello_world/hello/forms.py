@@ -1,4 +1,4 @@
-from django.forms import ModelForm, DateField
+from django.forms import Form, ModelForm, DateField, ChoiceField
 from django_hello_world.hello.models import Contact
 from django_hello_world.hello.widgets import DatePickerWidget
 
@@ -12,3 +12,14 @@ class ContactForm(ModelForm):
 
     class Meta:
         model = Contact
+
+
+class LogOrderingForm(Form):
+    FIRST = '0'
+    LAST = '1'
+    EVENT_CHOICES = (
+        (FIRST, 'First'),
+        (LAST, 'Last'),
+    )
+
+    order = ChoiceField(EVENT_CHOICES, initial=FIRST, label='Ordering')
