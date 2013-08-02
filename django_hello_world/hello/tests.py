@@ -9,15 +9,15 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client, RequestFactory
 from django.contrib.auth.models import User
-from django_hello_world.hello.models import LogRequest, LogModelSignals
-from django_hello_world.hello.middleware import RequestLoggerMiddleware
-from django_hello_world.hello.context_processors import settings
-from django_hello_world.hello.templatetags.hello_tags import edit_link
-from django_hello_world.hello.forms import LogOrderingForm
 import django_hello_world.settings as conf
+from models import LogRequest, LogModelSignals
+from middleware import RequestLoggerMiddleware
+from context_processors import settings
+from templatetags.hello_tags import edit_link
+from forms import LogOrderingForm
 
 from django.db.models.signals import post_save
-from django_hello_world.hello.signals import on_create_or_save
+from signals import on_create_or_save
 post_save.disconnect(on_create_or_save)
 
 

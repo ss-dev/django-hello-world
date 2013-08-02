@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
-from django_hello_world.hello.models import LogModelSignals
 from django.contrib.contenttypes.models import ContentType
+from django.dispatch import receiver
+from models import LogModelSignals
 
 
 @receiver(post_save)

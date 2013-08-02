@@ -1,6 +1,6 @@
 from django.forms import Form, ModelForm, DateField, ChoiceField
-from django_hello_world.hello.models import Contact
-from django_hello_world.hello.widgets import DatePickerWidget
+from models import Contact
+from widgets import DatePickerWidget
 
 
 class ContactForm(ModelForm):

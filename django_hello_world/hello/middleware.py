@@ -1,5 +1,5 @@
 from django.core.urlresolvers import resolve
-from django_hello_world.hello.models import LogRequest
+from models import LogRequest
 
 
 class RequestLoggerMiddleware(object):
