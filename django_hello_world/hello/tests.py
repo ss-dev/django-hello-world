@@ -1,20 +1,16 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
+from io import StringIO
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client, RequestFactory
 from django.contrib.auth.models import User
-import django_hello_world.settings as conf
+from django.core.management import call_command
 from models import LogRequest, LogModelSignals
 from middleware import RequestLoggerMiddleware
 from context_processors import settings
 from templatetags.hello_tags import edit_link
 from forms import LogOrderingForm
+import management.commands.models_info
+import django_hello_world.settings as conf
 
 from django.db.models.signals import post_save
 from signals import on_create_or_save
@@ -26,8 +22,6 @@ test_pwd = 'admin'
 
 
 class HttpTest(TestCase):
-    urls = 'django_hello_world.urls'
-
     def setUp(self):
         self.client = Client()
 
@@ -243,3 +237,12 @@ class SignalsTest(TestCase):
         self.assertEqual(LogModelSignals.objects.get(pk=2).model, 'logrequest')
 
         post_save.disconnect(on_create_or_save)
+
+
+class CommandTest(TestCase):
+    def test_models_info(self):
+        out = StringIO()
+        err = StringIO()
+        call_command('models_info', stdout=out, stderr=err)
+        self.assertTrue(out.getvalue().find('user - 1') >= 0)
+        self.assertTrue(err.getvalue().find('error: user - 1') >= 0)
