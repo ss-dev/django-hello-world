@@ -18,6 +18,10 @@ class LogRequest(models.Model):
     host = models.CharField('Host', max_length=150)
     path = models.CharField('Path', max_length=250)
     method = models.CharField('Method', max_length=30)
+    priority = models.IntegerField('Priority', blank=True, default=0)
+
+    class Meta:
+        ordering = ['date']
 
 
 class LogModelSignals(models.Model):

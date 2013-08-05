@@ -6,23 +6,30 @@
 
     <form action="{% url requests %}" method="get">
         <p>
-        {{ form.order.label_tag }}
-        {{ form.order }}
-        <input type="submit" value="Submit" />
+            {{ form.order.label_tag }}
+            {{ form.order }}
+            <input type="submit" value="Submit" />
         </p>
     </form>
 
-    {% if log_request %}
+    {% if formset %}
+        <form action="{% url requests %}" method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
         <table>
-            {% for obj in log_request %}
+            {% for form in formset %}
+                {{ form.id }}
                 <tr>
-                    <td>{{ obj.date }}</td>
-                    <td>{{ obj.host }}</td>
-                    <td>{{ obj.path }}</td>
-                    <td>{{ obj.method }}</td>
+                    <td>{{ form.instance.date }}</td>
+                    <td>{{ form.instance.host }}</td>
+                    <td>{{ form.instance.path }}</td>
+                    <td>{{ form.instance.method }}</td>
+                    <td>{{ form.priority }} {{ form.priority.errors }}</td>
                 </tr>
             {% endfor %}
         </table>
+        <input type="submit" value="Save" />
+        </form>
     {% endif %}
 
 {% endblock content %}

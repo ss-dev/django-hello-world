@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_protect
 from models import Contact, LogRequest
-from forms import ContactForm, LogOrderingForm
+from forms import ContactForm, LogRequestFormSet, LogOrderingForm
 
 
 @render_to('hello/home.html')
@@ -15,13 +15,21 @@ def home(request):
 
 
 @render_to('hello/requests.html')
+@csrf_protect
 def requests(request):
     form = LogOrderingForm(request.GET or None)
-    if form.is_valid() and form.cleaned_data['order'] == LogOrderingForm.LAST:
-        log_request = LogRequest.objects.filter().order_by('-pk')[:10]
+    if form.is_valid() and form.cleaned_data['order'] == LogOrderingForm.PRIORITY:
+        insts = LogRequest.objects.filter().order_by('-priority')[:10]
     else:
-        log_request = LogRequest.objects.filter().order_by('pk')[:10]
-    return {'log_request': log_request, 'form': form}
+        insts = LogRequest.objects.filter()[:10]
+
+    formset = LogRequestFormSet(request.POST or None, queryset=insts)
+
+    if formset.is_valid():
+        formset.save()
+        return HttpResponseRedirect(reverse('requests'))
+
+    return {'formset': formset, 'form': form}
 
 
 @login_required()

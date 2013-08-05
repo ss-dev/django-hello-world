@@ -1,5 +1,6 @@
 from django.forms import Form, ModelForm, DateField, ChoiceField
-from models import Contact
+from django.forms.models import modelformset_factory
+from models import Contact, LogRequest
 from widgets import DatePickerWidget
 
 
@@ -15,11 +16,14 @@ class ContactForm(ModelForm):
 
 
 class LogOrderingForm(Form):
-    FIRST = '0'
-    LAST = '1'
-    EVENT_CHOICES = (
-        (FIRST, 'First'),
-        (LAST, 'Last'),
+    DATE = '0'
+    PRIORITY = '1'
+    SORT_CHOICES = (
+        (DATE, 'date'),
+        (PRIORITY, 'priority'),
     )
 
-    order = ChoiceField(EVENT_CHOICES, initial=FIRST, label='Ordering')
+    order = ChoiceField(SORT_CHOICES, initial=DATE, label='Sorting by')
+
+
+LogRequestFormSet = modelformset_factory(LogRequest, fields=('priority',), extra=0)
