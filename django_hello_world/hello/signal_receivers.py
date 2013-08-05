@@ -6,8 +6,7 @@ from models import LogModelSignals
 
 @receiver(post_save)
 def on_create_or_save(sender, **kwargs):
-    if (not kwargs.get('raw', False) and
-            ContentType.objects.get_for_model(sender) != ContentType.objects.get_for_model(LogModelSignals)):
+    if not kwargs.get('raw', False) and sender != LogModelSignals:
         LogModelSignals.objects.create(
             model=ContentType.objects.get_for_model(sender).model,
             event=(LogModelSignals.CREATION if kwargs.get('created', False) else LogModelSignals.EDITING),

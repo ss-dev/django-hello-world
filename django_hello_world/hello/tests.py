@@ -9,11 +9,10 @@ from middleware import RequestLoggerMiddleware
 from context_processors import settings
 from templatetags.hello_tags import edit_link
 from forms import LogOrderingForm
-import management.commands.models_info
 import django_hello_world.settings as conf
 
 from django.db.models.signals import post_save
-from signals import on_create_or_save
+from signal_receivers import on_create_or_save
 post_save.disconnect(on_create_or_save)
 
 
@@ -123,7 +122,6 @@ class EditTest(TestCase):
 
 class MiddlewareTest(TestCase):
     def setUp(self):
-        self.client = Client()
         self.factory = RequestFactory()
         self.middleware = RequestLoggerMiddleware()
 
@@ -139,27 +137,64 @@ class MiddlewareTest(TestCase):
         self.middleware.process_request(request)
         self.assertEqual(LogRequest.objects.count(), 0)
 
-    def test_log_view(self):
+
+class RequestsTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        self.middleware = RequestLoggerMiddleware()
+
         request = self.factory.get('/')
         self.middleware.process_request(request)
 
+        self.data_valid = {
+            'form-0-id': '1',
+            'form-0-priority': '123',
+            'form-INITIAL_FORMS': 1,
+            'form-MAX_NUM_FORMS': 1000,
+            'form-TOTAL_FORMS': 1
+        }
+        self.data_invalid = {
+            'form-0-id': '1',
+            'form-0-priority': 'abc',
+            'form-INITIAL_FORMS': 1,
+            'form-MAX_NUM_FORMS': 1000,
+            'form-TOTAL_FORMS': 1
+        }
+
+    def test_log_view(self):
         response = self.client.get(reverse('requests'))
-        self.assertIsNotNone(response.context['log_request'])
-        self.assertContains(response, response.context['log_request'][0].host)
+        self.assertIsNotNone(response.context['formset'])
+        self.assertContains(response, response.context['formset'][0].instance.host)
         self.assertIsNotNone(response.context['form'])
         self.assertContains(response, response.context['form'].fields['order'].label)
 
     def test_ordering(self):
-        # add 2 records (id=1 and id=2)
+        # add 2 records (id=2, priority=100)
         request = self.factory.get('/')
         self.middleware.process_request(request)
-        self.middleware.process_request(request)
+        obj = LogRequest.objects.get(pk=2)
+        obj.priority = 100
+        obj.save()
 
-        response = self.client.get(reverse('requests'), {'order': LogOrderingForm.FIRST})
-        self.assertEqual(response.context['log_request'][0].id, 1)
+        response = self.client.get(reverse('requests'), {'order': LogOrderingForm.DATE})
+        self.assertEqual(response.context['formset'][0].instance.id, 1)
 
-        response = self.client.get(reverse('requests'), {'order': LogOrderingForm.LAST})
-        self.assertEqual(response.context['log_request'][0].id, 2)
+        response = self.client.get(reverse('requests'), {'order': LogOrderingForm.PRIORITY})
+        self.assertEqual(response.context['formset'][0].instance.id, 2)
+
+    def test_formset_save(self):
+        response = self.client.post(reverse('requests'), self.data_valid)
+        self.assertEqual(response.status_code, 302)
+
+        response = self.client.get(reverse('requests'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['formset'][0].instance.priority, 123)
+
+    def test_formset_error(self):
+        response = self.client.post(reverse('requests'), self.data_invalid)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Enter a whole number')
 
 
 class TemplateContextTest(TestCase):
