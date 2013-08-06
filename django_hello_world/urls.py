@@ -6,11 +6,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    url(r'^$', 'django_hello_world.hello.views.home', name='home'),
-    url(r'^edit/$', 'django_hello_world.hello.views.edit', name='edit'),
-    url(r'^requests/$', 'django_hello_world.hello.views.requests', name='requests'),
-
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
@@ -18,6 +13,12 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'hello/login.html'}, name='login'),
+)
+
+urlpatterns += patterns('django_hello_world.hello.views',
+    url(r'^$', 'home', name='home'),
+    url(r'^edit/$', 'edit', name='edit'),
+    url(r'^requests/$', 'requests', name='requests'),
 )
 
 if settings.DEBUG:

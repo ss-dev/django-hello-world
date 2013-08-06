@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block head %}
+    {% load static %}
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script>
-    <script src="{{ STATIC_URL }}js/index.js"></script>
+    <script src="{% get_static_prefix %}js/index.js"></script>
     {{ form.media }}
 {% endblock %}
 

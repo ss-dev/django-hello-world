@@ -6,7 +6,10 @@ register = template.Library()
 
 
 def url_to_edit_object(obj):
-    url = reverse('admin:%s_%s_change' % (obj._meta.app_label, obj._meta.module_name), args=[obj.id])
+    url = reverse('admin:%s_%s_change' % (
+        obj._meta.app_label,
+        obj._meta.module_name),
+        args=[obj.id])
     return url
 
 
@@ -17,5 +20,5 @@ def edit_link(value):
             url_to_edit_object(value),
             escape(value)
         )
-    except (Exception):
+    except (AttributeError,):
         return '()'

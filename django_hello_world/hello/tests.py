@@ -16,14 +16,11 @@ from signal_receivers import on_create_or_save
 post_save.disconnect(on_create_or_save)
 
 
-test_login = 'admin'
-test_pwd = 'admin'
+TEST_LOGIN = 'admin'
+TEST_PWD = 'admin'
 
 
 class HttpTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-
     def test_home(self):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
@@ -33,7 +30,7 @@ class HttpTest(TestCase):
         response = self.client.get(reverse('edit'))
         self.assertEqual(response.status_code, 302)
 
-        self.client.login(username=test_login, password=test_pwd)
+        self.client.login(username=TEST_LOGIN, password=TEST_PWD)
         response = self.client.get(reverse('edit'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'hello/edit.html')
@@ -45,9 +42,6 @@ class HttpTest(TestCase):
 
 
 class HomeTest(TestCase):
-    def setUp(self):
-        self.client = Client()
-
     def test_contact_data(self):
         response = self.client.get(reverse('home'))
 
@@ -68,15 +62,14 @@ class HomeTest(TestCase):
         response = self.client.get(reverse('home'))
         self.assertContains(response, 'Login</a>')
 
-        self.client.login(username=test_login, password=test_pwd)
+        self.client.login(username=TEST_LOGIN, password=TEST_PWD)
         response = self.client.get(reverse('home'))
         self.assertContains(response, 'Edit</a>')
 
 
 class EditTest(TestCase):
     def setUp(self):
-        self.client = Client()
-        self.client.login(username=test_login, password=test_pwd)
+        self.client.login(username=TEST_LOGIN, password=TEST_PWD)
         self.data_valid = {
             'email': 'abc@abc.com',
             'name': 'abc',
@@ -140,7 +133,6 @@ class MiddlewareTest(TestCase):
 
 class RequestsTest(TestCase):
     def setUp(self):
-        self.client = Client()
         self.factory = RequestFactory()
         self.middleware = RequestLoggerMiddleware()
 

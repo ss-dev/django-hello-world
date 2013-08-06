@@ -15,7 +15,7 @@ def on_create_or_save(sender, **kwargs):
 
 @receiver(post_delete)
 def on_delete(sender, **kwargs):
-    if ContentType.objects.get_for_model(sender) != ContentType.objects.get_for_model(LogModelSignals):
+    if sender != LogModelSignals:
         LogModelSignals.objects.create(
             model=ContentType.objects.get_for_model(sender).model,
             event=LogModelSignals.DELETION,
